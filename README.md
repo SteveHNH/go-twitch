@@ -18,7 +18,7 @@ import (
   "log"
   "os"
 
-  "github.com/knspriggs/go-twitch"
+  twitch "github.com/stevehnh/go-twitch"
 )
 
 var clientID string
