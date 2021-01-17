@@ -1,10 +1,10 @@
 package main
 
 import (
-  "log"
-  "os"
+	"log"
+	"os"
 
-  "github.com/knspriggs/go-twitch"
+	"github.com/stevehnh/go-twitch"
 )
 
 var clientID string

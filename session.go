@@ -16,6 +16,7 @@ type NewSessionInput struct {
 	URL           *url.URL
 	VersionHeader string
 	ClientID      string // required
+	BearerToken   string // required
 }
 
 // Session represents a persistent connection to Twitch
@@ -24,6 +25,7 @@ type Session struct {
 	URL           *url.URL
 	VersionHeader string
 	ClientID      string
+	BearerToken   string
 }
 
 type rootResponse struct {
@@ -32,18 +34,18 @@ type rootResponse struct {
 	Token      map[string]interface{} `json:"token"`
 }
 
-// NewSession creates and returns a new Twtich session
+// NewSession creates and returns a new Twitch session
 func NewSession(input NewSessionInput) (*Session, error) {
 	if input.ClientID == "" {
 		return nil, fmt.Errorf("A clientID must be supplied")
 	}
 
 	if input.URL == nil {
-		input.URL = DefaultURL
+		input.URL = DefaultV5URL
 	}
 
 	if input.VersionHeader == "" {
-		input.VersionHeader = APIV3Header
+		input.VersionHeader = APIV5Header
 	}
 
 	return &Session{
@@ -60,8 +62,9 @@ func (session *Session) request(method string, url string, q interface{}, r inte
 	if requestError != nil {
 		return requestError
 	}
-	request.Header.Add("Accept", APIV3Header)
+	request.Header.Add("Accept", APIV5Header)
 	request.Header.Add("Client-ID", session.ClientID)
+	request.Header.Add("Authorization", "Bearer " + session.BearerToken)
 
 	response, responseError := session.Client.Do(request)
 	if responseError != nil {
