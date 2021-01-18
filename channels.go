@@ -21,7 +21,7 @@ type Data struct {
 
 // GetChannelInputType - input type for the GetChannel function
 type GetChannelInputType struct {
-	BroadcasterID string
+	BroadcasterID string `url:"broadcaster_id"`
 }
 
 // GetChannelOutputType - returned type containing the channel
