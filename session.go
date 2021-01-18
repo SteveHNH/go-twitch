@@ -14,7 +14,6 @@ import (
 // NewSessionInput - input struct for creating a new session
 type NewSessionInput struct {
 	URL           *url.URL
-	VersionHeader string
 	ClientID      string // required
 	BearerToken   string // required
 }
@@ -23,7 +22,6 @@ type NewSessionInput struct {
 type Session struct {
 	Client        *http.Client
 	URL           *url.URL
-	VersionHeader string
 	ClientID      string
 	BearerToken   string
 }
@@ -41,18 +39,14 @@ func NewSession(input NewSessionInput) (*Session, error) {
 	}
 
 	if input.URL == nil {
-		input.URL = DefaultV5URL
-	}
-
-	if input.VersionHeader == "" {
-		input.VersionHeader = APIV5Header
+		input.URL = DefaultURL
 	}
 
 	return &Session{
 		Client:        &http.Client{},
 		URL:           input.URL,
-		VersionHeader: input.VersionHeader,
 		ClientID:      input.ClientID,
+		BearerToken:   input.BearerToken,
 	}, nil
 }
 
@@ -62,7 +56,6 @@ func (session *Session) request(method string, url string, q interface{}, r inte
 	if requestError != nil {
 		return requestError
 	}
-	request.Header.Add("Accept", APIV5Header)
 	request.Header.Add("Client-ID", session.ClientID)
 	request.Header.Add("Authorization", "Bearer " + session.BearerToken)
 

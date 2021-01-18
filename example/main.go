@@ -11,10 +11,11 @@ var clientID string
 
 func init() {
   clientID = os.Getenv("CLIENT_ID")
+  bearerToken = os.Getenv("BEARER_TOKEN")
 }
 
 func main() {
-  twitchSession, err := twitch.NewSession(twitch.NewSessionInput{ClientID: clientID})
+  twitchSession, err := twitch.NewSession(twitch.NewSessionInput{ClientID: clientID, BearerToken: bearerToken })
   if err != nil {
     log.Fatalln(err)
   }
