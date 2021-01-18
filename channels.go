@@ -1,7 +1,7 @@
 package twitch
 
 // ChannelType - describes a channel on twitch
-type ChannelType struct {
+type ChannelType []struct {
 	BroadcasterID string `json:"broadcaster_id"`
 	BroadcasterName string `json:"broadcaster_name"`
 	BroadcasterLanguage string `json:"broadcaster_language"`
